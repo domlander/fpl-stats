@@ -45,7 +45,7 @@ export default function Home({ players }) {
       </Head>
 
       <main className={styles.main}>
-        <h1>Arsenal</h1>
+        <h1 className="text-3xl font-bold">Arsenal</h1>
         <table>
           <thead>
             {table.getHeaderGroups().map((headerGroup) => (
