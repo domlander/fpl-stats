@@ -4,37 +4,75 @@ const prisma = new PrismaClient();
 
 export default async function handler(req, res) {
   const data = await fetchResults();
-  const gameweeks = data.events.map((gameweek) => ({
-    id: gameweek.id,
-    name: gameweek.name,
-    deadline_time: gameweek.deadline_time,
-    finished: gameweek.finished,
-    data_checked: gameweek.data_checked,
-    is_previous: gameweek.is_previous,
-    is_current: gameweek.is_current,
-    is_next: gameweek.is_next,
-  }));
+  const gameweeks = data.events.map(
+    ({
+      id,
+      name,
+      deadline_time,
+      finished,
+      data_checked,
+      is_previous,
+      is_current,
+      is_next,
+    }) => ({
+      id,
+      name,
+      deadline_time,
+      finished,
+      data_checked,
+      is_previous,
+      is_current,
+      is_next,
+    })
+  );
 
-  const players = data.elements.map((player) => ({
-    id: player.id,
-    first_name: player.first_name,
-    second_name: player.second_name,
-    team: player.team,
-    form: player.form,
-    total_points: player.total_points,
-    minutes: player.minutes,
-    goals_scored: player.goals_scored,
-    assists: player.assists,
-    clean_sheets: player.clean_sheets,
-    goals_conceded: player.goals_conceded,
-    own_goals: player.own_goals,
-    penalties_saved: player.penalties_saved,
-    penalties_missed: player.penalties_missed,
-    yellow_cards: player.yellow_cards,
-    red_cards: player.red_cards,
-    saves: player.saves,
-    bonus: player.bonus,
-  }));
+  const players = data.elements.map(
+    ({
+      id,
+      first_name,
+      second_name,
+      web_name,
+      team,
+      element_type,
+      form,
+      total_points,
+      points_per_game,
+      minutes,
+      goals_scored,
+      assists,
+      clean_sheets,
+      goals_conceded,
+      own_goals,
+      penalties_saved,
+      penalties_missed,
+      yellow_cards,
+      red_cards,
+      saves,
+      bonus,
+    }) => ({
+      id,
+      first_name,
+      second_name,
+      web_name,
+      team,
+      element_type,
+      form,
+      total_points,
+      points_per_game,
+      minutes,
+      goals_scored,
+      assists,
+      clean_sheets,
+      goals_conceded,
+      own_goals,
+      penalties_saved,
+      penalties_missed,
+      yellow_cards,
+      red_cards,
+      saves,
+      bonus,
+    })
+  );
 
   const teams = data.teams.map(
     ({ id, name, short_name, played, points, position, form }) => ({

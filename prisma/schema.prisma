@@ -11,9 +11,12 @@ model players {
   id               Int      @id @default(autoincrement())
   first_name       String   @db.VarChar
   second_name      String   @db.VarChar
+  web_name         String   @db.VarChar
   team             Int?
+  element_type     Int?
   form             Decimal? @db.Decimal
   total_points     Int?
+  points_per_game  Decimal? @db.Decimal
   minutes          Int?
   goals_scored     Int?
   assists          Int?

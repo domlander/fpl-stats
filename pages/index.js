@@ -1,8 +1,41 @@
+import React from "react";
 import Head from "next/head";
-import Image from "next/image";
 import styles from "../styles/Home.module.css";
+import { PrismaClient } from "@prisma/client";
+import mapPlayers from "../utils/apiMappings/players";
+const prisma = new PrismaClient();
 
-export default function Home() {
+import {
+  flexRender,
+  getCoreRowModel,
+  useReactTable,
+} from "@tanstack/react-table";
+
+const columns = [
+  {
+    id: "Name",
+    accessorFn: (row) => `${row.firstName} ${row.lastName}`,
+  },
+  { id: "Position", accessorKey: "position" },
+  { id: "Goals", accessorKey: "goals" },
+  { id: "Assists", accessorKey: "assists" },
+  { id: "Clean sheets", accessorKey: "cleanSheets" },
+  { id: "Minutes", accessorKey: "minutes" },
+  { id: "Goals conceded", accessorKey: "goalsConceded" },
+  { id: "bonus", accessorKey: "bonus" },
+];
+
+export default function Home({ players }) {
+  const [data, setData] = React.useState(() => [...players]);
+
+  console.log({ players });
+
+  const table = useReactTable({
+    data,
+    columns,
+    getCoreRowModel: getCoreRowModel(),
+  });
+
   return (
     <div className={styles.container}>
       <Head>
@@ -13,28 +46,54 @@ export default function Home() {
 
       <main className={styles.main}>
         <h1>Arsenal</h1>
-
-        <div></div>
+        <table>
+          <thead>
+            {table.getHeaderGroups().map((headerGroup) => (
+              <tr key={headerGroup.id}>
+                {headerGroup.headers.map((header) => (
+                  <th key={header.id}>
+                    {flexRender(
+                      header.column.columnDef.header,
+                      header.getContext()
+                    )}
+                  </th>
+                ))}
+              </tr>
+            ))}
+          </thead>
+          <tbody>
+            {table.getRowModel().rows.map((row) => (
+              <tr key={row.id}>
+                {row.getVisibleCells().map((cell) => (
+                  <td key={cell.id}>
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </main>
 
       <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{" "}
-          <span className={styles.logo}>
-            <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
-          </span>
-        </a>
+        <div>FPL data</div>
       </footer>
     </div>
   );
 }
 
 export async function getStaticProps(context) {
+  const playersDb = await prisma.players.findMany({
+    where: {
+      team: 1,
+    },
+  });
+
+  const players = mapPlayers(JSON.parse(JSON.stringify(playersDb)));
+
   return {
-    props: {}, // will be passed to the page component as props
+    props: {
+      players,
+    },
   };
 }
