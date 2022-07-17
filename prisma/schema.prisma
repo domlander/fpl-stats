@@ -10,7 +10,7 @@ datasource db {
 model players {
   id               Int      @id @default(autoincrement())
   first_name       String   @db.VarChar
-  last_name        String   @db.VarChar
+  second_name      String   @db.VarChar
   team             Int?
   form             Decimal? @db.Decimal
   total_points     Int?
@@ -39,7 +39,7 @@ model events {
   is_next       Boolean
 }
 
-model team {
+model teams {
   id         Int    @id @default(autoincrement())
   name       String @db.VarChar
   short_name String @db.VarChar

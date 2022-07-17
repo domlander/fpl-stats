@@ -2,7 +2,7 @@ DROP TABLE IF EXISTS players cascade;
 CREATE TABLE players (
     id SERIAL PRIMARY KEY,
     first_name VARCHAR NOT null,
-    last_name VARCHAR NOT null,
+    second_name VARCHAR NOT null,
     team INTEGER,
     form decimal,
     total_points INTEGER,
@@ -20,8 +20,8 @@ CREATE TABLE players (
     bonus INTEGER
 );
 
-DROP TABLE IF EXISTS team cascade;
-CREATE TABLE team (
+DROP TABLE IF EXISTS teams cascade;
+CREATE TABLE teams (
     id SERIAL PRIMARY KEY,
     name VARCHAR NOT null,
     short_name VARCHAR NOT null,
